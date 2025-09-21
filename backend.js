@@ -3,7 +3,16 @@ var apartmentBlocks = {
     {
       numero_apto: 101,
       vagas: [
-        { numero: 111, ocupada: false },
+        { 
+            numero: 111,
+            ocupada: true,
+            vehicle: {
+                owner: "Rafael Claumann Bernardes",
+                plate: "MKU4J39",
+                model: "New Fiesta",
+                color: "Branca"
+            }
+        },
         { numero: 222, ocupada: false },
       ],
     },
@@ -23,6 +32,7 @@ let _apartmentBlocksCache = null;
 function _initApartmentBlocks() {
   if (!localStorage.getItem("apartmentBlocks")) {
     localStorage.setItem("apartmentBlocks", JSON.stringify(apartmentBlocks));
+    console.log("Iniciando < apartmentBlocks > no < localStorage >");
   }
 }
 
@@ -30,13 +40,17 @@ function _getApartmentBlocks() {
   if (!_apartmentBlocksCache) {
     const stored = localStorage.getItem("apartmentBlocks");
     _apartmentBlocksCache = stored ? JSON.parse(stored) : {};
+    console.log("Preenchendo < apartmentBlocks > no < _apartmentBlocksCache >");
   }
   return _apartmentBlocksCache;
 }
 
 function saveApartmentBlocks() {
   if (_apartmentBlocksCache) {
-    localStorage.setItem("apartmentBlocks", JSON.stringify(_apartmentBlocksCache));
+    localStorage.setItem(
+      "apartmentBlocks",
+      JSON.stringify(_apartmentBlocksCache)
+    );
   }
 }
 
@@ -84,4 +98,61 @@ function getParkingSpot(block, apartmentNumber, spotNumber) {
   return apartment.vagas.find((vaga) => vaga.numero == spotNumber) || null;
 }
 
+function test() {
+  const _apartmentBlocks = _getApartmentBlocks();
+
+  const block = Object.keys(apartmentBlocks).find(key => apartmentBlocks[key].includes(apartment));
+
+
+  Object.values(allParkingSpots).flatMap(spot => spot.vehicle)
+
+  allParkingSpot.flatMap(spot => spot.vehicle).filter(spot => spot != null)
+
+
+// todos os apartamentos em lista
+let allApartments = Object.values(apartmentBlocks).flatMap(apartments => apartments);
+let allParkingSpots = allApartments.flatMap(apartment => apartment.vagas);
+let allSpotsNumbers = allParkingSpots.flatMap(spot => spot.numero)
+let allSpotsVehicles = allParkingSpots.flatMap(spot => spot.vehicle).filter(vehicle => vehicle != null)
+
+Object.entries(apartmentBlocks).flatMap(([block, apartments]) => (
+    {
+        block: block,
+        apartment: apartments.flatMap(apto => {{
+            
+        }})
+    }
+))
+
+allApartments
+    .flatMap(apartment => apartment)
+
+allApartments.flatMap(apartment => apartment.vagas.flatMap(spots => ({
+    apartment: apartment.numero_apto,
+    spot_numero: spots.numero,
+    spot_plate: spots.vehicle
+})));
+
+Object.values(apartmentBlocks)
+    .flatMap(apartments => apartments)
+    .flatMap(apartment => ({
+        bloco: Object.keys(apartmentBlocks).find(key => apartmentBlocks[key].includes)
+    }))
+
+const allParkingSpotss = Object.values(apartmentBlocks)
+  .flatMap(apartments => 
+    apartments.flatMap(apartment => 
+      apartment.vagas.map(vaga => ({
+        ...vaga,
+        apartamento: apartment.numero_apto,
+        bloco: Object.keys(apartmentBlocks).find(key => apartmentBlocks[key].includes(apartment))
+      }))
+    )
+  );
+
+console.log(allParkingSpots);
+
+
+
+}
 document.addEventListener("DOMContentLoaded", _initApartmentBlocks);
