@@ -104,6 +104,9 @@ function enviarFormulario(event) {
   foundParkingSpot.vehicle = vehicleData;
   foundParkingSpot.ocupada = true;
 
+  saveApartmentBlocks();
+  console.log("parkingSpot: " + JSON.stringify(foundParkingSpot))
+
   const output = document.getElementById("output");
   output.style.display = "block";
   output.textContent = JSON.stringify(foundApartment, null, 2);

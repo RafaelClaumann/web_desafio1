@@ -18,9 +18,25 @@ var apartmentBlocks = {
   ],
 };
 
+let _apartmentBlocksCache = null;
+
 function _initApartmentBlocks() {
   if (!localStorage.getItem("apartmentBlocks")) {
     localStorage.setItem("apartmentBlocks", JSON.stringify(apartmentBlocks));
+  }
+}
+
+function _getApartmentBlocks() {
+  if (!_apartmentBlocksCache) {
+    const stored = localStorage.getItem("apartmentBlocks");
+    _apartmentBlocksCache = stored ? JSON.parse(stored) : {};
+  }
+  return _apartmentBlocksCache;
+}
+
+function saveApartmentBlocks() {
+  if (_apartmentBlocksCache) {
+    localStorage.setItem("apartmentBlocks", JSON.stringify(_apartmentBlocksCache));
   }
 }
 
@@ -29,7 +45,8 @@ function _initApartmentBlocks() {
  * @returns {Array<string>} Lista de apartamentos
  */
 function getBlocks() {
-  return Object.keys(apartmentBlocks) || [];
+  const _apartmentBlocks = _getApartmentBlocks();
+  return Object.keys(_apartmentBlocks) || [];
 }
 
 /**
@@ -38,7 +55,8 @@ function getBlocks() {
  * @returns {Array<Object>} Lista de apartamentos
  */
 function getApartmentsByBlock(block) {
-  return apartmentBlocks[block] || [];
+  const _apartmentBlocks = _getApartmentBlocks();
+  return _apartmentBlocks[block] || [];
 }
 
 /**
@@ -48,7 +66,8 @@ function getApartmentsByBlock(block) {
  * @returns {Object|null} Apartamento encontrado ou null se não existir
  */
 function getApartment(block, apartmentNumber) {
-  return apartmentBlocks[block].find(
+  const _apartmentBlocks = _getApartmentBlocks();
+  return _apartmentBlocks[block].find(
     (apto) => apto.numero_apto == apartmentNumber
   );
 }
