@@ -85,42 +85,28 @@ function clearComboBox(idComboBox) {
 function enviarFormulario(event) {
   event.preventDefault();
 
-  const cliente = {
-    proprietario: document.getElementById("nome_proprietario").value,
-    placa: placa.document.getElementById("placa_veiculo"),
-    modelo: document.getElementById("modelo_veiculo").value,
-    cor: cor.document.getElementById("cor_veiculo"),
+  const vehicleData = {
+    owner: document.getElementById("nome_proprietario").value,
+    plate: document.getElementById("placa_veiculo").value,
+    model: document.getElementById("modelo_veiculo").value,
+    color: document.getElementById("cor_veiculo").value,
   };
 
-  const dados = {
-    bloco: document.getElementById("bloco").value,
-    apartamento: document.getElementById("apartamento").value,
-    vaga: vagaSelect.document.getElementById("vaga"),
+  const apartmentData = {
+    block: document.getElementById("bloco").value,
+    number: parseInt(document.getElementById("apartamento").value),
+    parkingSpot: parseInt(document.getElementById("vaga").value),
   };
 
-  var apartment = getApartment(dados.bloco, dados.apartamento);
-  var parkingSpot = getParkingSpot(dados.bloco, dados.apartamento, dados.vaga);
+  var foundApartment = getApartment(apartmentData.block, apartmentData.number);
+  var foundParkingSpot = getParkingSpot(apartmentData.block, apartmentData.number, apartmentData.parkingSpot);
 
-  parkingSpot.vehicle = cliente;
+  foundParkingSpot.vehicle = vehicleData;
+  foundParkingSpot.ocupada = true;
 
-  console.log("apartment: " + JSON.stringify(apartment));
-  console.log("parkingSpot: " + JSON.stringify(parkingSpot));
-  console.log("parkingSpot.vehicle: " + JSON.stringify(parkingSpot.vehicle));
-
-  alert(
-    `
-      Detalhes da Vaga
-
-      Bloco: ${dados.bloco}
-      Apartamento: ${dados.apartamento}
-      Vaga: ${dados.vaga}
-
-      Proprietário: ${cliente.proprietario}
-      Placa: ${cliente.placa}
-      Modelo: ${cliente.modelo}
-      Cor: ${cliente.cor}
-    `
-  );
+  const output = document.getElementById("output");
+  output.style.display = "block";
+  output.textContent = JSON.stringify(foundApartment, null, 2);
 }
 
 document.addEventListener("DOMContentLoaded", fillBlocksComboBox);
