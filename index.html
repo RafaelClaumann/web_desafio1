@@ -1,161 +1,180 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cadastro de Veículo</title>
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <title>Cadastro de Veículo</title>
-</head>
+  <body>
+    <form>
+      <fieldset>
+        <legend>Dados do Proprietário</legend>
+        <label>Nome do proprietário:</label>
+        <input type="text" name="nome_proprietario" required />
+      </fieldset>
 
-<body>
-  <form>
-    <fieldset>
-      <legend>Dados do Proprietário</legend>
-      <label>Nome do proprietário:</label>
-      <input type="text" name="nome_proprietario" required/>
-    </fieldset>
+      <fieldset>
+        <legend>Dados do Veículo</legend>
+        <label>Placa do veículo:</label>
+        <input type="text" name="placa_veiculo" required />
 
-    <fieldset>
-      <legend>Dados do Veículo</legend>
-      <label>Placa do veículo:</label>
-      <input type="text" name="placa_veiculo" required/>
+        <label>Modelo do veículo:</label>
+        <input type="text" name="modelo_veiculo" required />
 
-      <label>Modelo do veículo:</label>
-      <input type="text" name="modelo_veiculo" required/>
+        <label>Cor do veículo:</label>
+        <input type="text" name="cor_veiculo" required />
+      </fieldset>
 
-      <label>Cor do veículo:</label>
-      <input type="text" name="cor_veiculo" required/>
-    </fieldset>
+      <fieldset>
+        <legend>Dados do Apartamento</legend>
 
-    <fieldset>
-      <legend>Dados do Apartamento</legend>
+        <label
+          >Bloco do apartamento:
+          <select
+            id="bloco"
+            name="bloco_apartamento"
+            required
+            onchange="liberarApartamento()"
+          >
+            <option value="">Selecione...</option>
+          </select>
+        </label>
 
-      <label>Bloco do apartamento:
-        <select id="bloco" name="bloco_apartamento" required onchange="liberarApartamento()">
-          <option value="">Selecione...</option>
-        </select>
-      </label>
+        <label
+          >Número do apartamento:
+          <select
+            id="apartamento"
+            name="numero_apartamento"
+            required
+            disabled
+            onchange="liberarVaga()"
+          >
+            <option value="">Selecione...</option>
+          </select>
+        </label>
 
-      <label>Número do apartamento:
-        <select id="apartamento" name="numero_apartamento" required disabled onchange="liberarVaga()">
-          <option value="">Selecione...</option>
-        </select>
-      </label>
+        <label
+          >Número da vaga de estacionamento:
+          <select id="vaga" name="vaga_estacionamento" required disabled>
+            <option value="">Selecione...</option>
+          </select>
+        </label>
 
-      <label>Número da vaga de estacionamento:
-        <select id="vaga" name="vaga_estacionamento" required disabled>
-          <option value="">Selecione...</option>
-        </select>
-      </label>
+        <script>
+          const blocos = {
+            A: [
+              { numero_apto: 101, numero_vaga: 111, ocupada: true },
+              { numero_apto: 101, numero_vaga: 222, ocupada: false },
+              { numero_apto: 103, numero_vaga: 333, ocupada: false },
+              { numero_apto: 104, numero_vaga: 444, ocupada: false },
+            ],
+            B: [
+              { numero_apto: 404, numero_vaga: 4, ocupada: false },
+              { numero_apto: 422, numero_vaga: 2, ocupada: false },
+              { numero_apto: 409, numero_vaga: 9, ocupada: false },
+            ],
+          };
 
-      <script>
-        const blocos = {
-          A: [
-            { numero_apto: 101, numero_vaga: 111, ocupada: true },
-            { numero_apto: 101, numero_vaga: 222, ocupada: false },
-            { numero_apto: 103, numero_vaga: 333, ocupada: false },
-            { numero_apto: 104, numero_vaga: 444, ocupada: false },
-          ],
-          B: [
-            { numero_apto: 404, numero_vaga: 4, ocupada: false },
-            { numero_apto: 422, numero_vaga: 2, ocupada: false },
-            { numero_apto: 409, numero_vaga: 9, ocupada: false },
-          ],
-        };
+          function liberarApartamento() {
+            var valorBloco = document.getElementById("bloco").value;
+            var comboAparamento = document.getElementById("apartamento");
 
-        function preencherComboBlocos() {
-            const comboBloco = document.getElementById('bloco');
-            
-            while (comboBloco.options.length > 1) {
-                comboBloco.remove(1);
+            document.getElementById("apartamento").disabled = true;
+            document.getElementById("vaga").disabled = true;
+
+            if (valorBloco) {
+              comboAparamento.disabled = false;
+              preencherComboApartamentos();
+              return;
             }
-            
-            Object.keys(blocos).forEach(blocoKey => {
-                const option = document.createElement('option');
-                option.value = blocoKey;
-                option.textContent = "Bloco " + blocoKey;
-                comboBloco.appendChild(option);
-            })
-        }
 
-        function preencherComboApartamentos() {
-            var comboAparamento = document.getElementById('apartamento');
-            const blocoSelecionado = document.getElementById('bloco').value;
-
-            while (comboAparamento.options.length > 1) { comboAparamento.remove(1); }
-
-            const vistos = new Set();
-            blocos[blocoSelecionado].forEach(apartamento => {
-                if (!vistos.has(apartamento.numero_apto)) {                  
-                  const option = document.createElement('option');
-                  option.value = apartamento.numero_apto;
-                  option.textContent = "Apartamento " + option.value;
-                  comboAparamento.appendChild(option);
-                  vistos.add(apartamento.numero_apto);
-                }
-            })
-        }
-
-        function liberarApartamento() {
-          var valorBloco = document.getElementById('bloco').value;
-          var comboAparamento = document.getElementById('apartamento');
-
-          console.log("valorBloco: " + valorBloco);
-          console.log("comboAparamento: " + comboAparamento.disabled);
-
-          if (valorBloco !== "") {
-            comboAparamento.disabled = false;
-            preencherComboApartamentos()
-          } else {
             comboAparamento.disabled = true;
             comboAparamento.value = "";
           }
-        }
 
-        function liberarVaga() {
-          var valorApartamento = document.getElementById('apartamento').value;
-          var comboVaga = document.getElementById('vaga');
+          function liberarVaga() {
+            var valorApartamento = document.getElementById("apartamento").value;
+            var comboVaga = document.getElementById("vaga");
 
-                      while (comboVaga.options.length > 1) {
-                comboVaga.remove(1);
+            document.getElementById("vaga").disabled = true;
+
+            if (valorApartamento) {
+              comboVaga.disabled = false;
+              preencherComboVagas();
+              return;
             }
 
-
-          const blocoSelecionado = document.getElementById('bloco').value;
-          const apartamentoSelecionado = document.getElementById('apartamento').value;
-          console.log("apartamento selecionado: " + apartamentoSelecionado)
-
-           blocos[blocoSelecionado].forEach(bloco => {
-
-            if (bloco.apartamento == apartamentoSelecionado) {
-
-              
-                  const option = document.createElement('option');
-
-                  option.value = bloco.numero;
-                  option.textContent = "Vaga " + bloco.numero;
-                  comboVaga.appendChild(option);
-            }
-
-            
-            console.log(JSON.stringify(bloco.apartamento));
-
-
-           })
-
-          if (valorApartamento !== "") {
-            comboVaga.disabled = false;
-          } else {
             comboVaga.disabled = true;
             comboVaga.value = "";
           }
-        }
 
-        document.addEventListener('DOMContentLoaded', preencherComboBlocos);
-      </script>
-    </fieldset>
+          function preencherComboBlocos() {
+            const comboBloco = document.getElementById("bloco");
 
-    <input type="submit" value="Enviar" />
-  </form>
-</body>
+            while (comboBloco.options.length > 1) {
+              comboBloco.remove(1);
+            }
 
+            Object.keys(blocos).forEach((blocoKey) => {
+              const option = document.createElement("option");
+              option.value = blocoKey;
+              option.textContent = "Bloco " + blocoKey;
+              comboBloco.appendChild(option);
+            });
+          }
+
+          function preencherComboApartamentos() {
+            var comboAparamento = document.getElementById("apartamento");
+            const blocoSelecionado = document.getElementById("bloco").value;
+
+            while (comboAparamento.options.length > 1) {
+              comboAparamento.remove(1);
+            }
+
+            const vistos = new Set();
+            blocos[blocoSelecionado].forEach((apartamento) => {
+              if (!vistos.has(apartamento.numero_apto)) {
+                const option = document.createElement("option");
+                option.value = apartamento.numero_apto;
+                option.textContent = "Apartamento " + option.value;
+                comboAparamento.appendChild(option);
+                vistos.add(apartamento.numero_apto);
+              }
+            });
+          }
+
+          function preencherComboVagas() {
+            var valorApartamento = document.getElementById("apartamento").value;
+            var comboVaga = document.getElementById("vaga");
+
+            while (comboVaga.options.length > 1) {
+              comboVaga.remove(1);
+            }
+
+            const blocoSelecionado = document.getElementById("bloco").value;
+            const apartamentoSelecionado =
+              document.getElementById("apartamento").value;
+
+            console.log("bloco selecionado: " + blocoSelecionado);
+            console.log("apartamento selecionado: " + apartamentoSelecionado);
+
+            blocos[blocoSelecionado].forEach((bloco) => {
+              if (bloco.numero_apto == apartamentoSelecionado) {
+                const option = document.createElement("option");
+                option.value = bloco.numero_vaga;
+                option.textContent = "Vaga " + option.value;
+                comboVaga.appendChild(option);
+              }
+
+              console.log(JSON.stringify(bloco.apartamento));
+            });
+          }
+
+          document.addEventListener("DOMContentLoaded", preencherComboBlocos);
+        </script>
+      </fieldset>
+
+      <input type="submit" value="Enviar" />
+    </form>
+  </body>
 </html>
