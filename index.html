@@ -109,65 +109,61 @@
           }
 
           function preencherComboBlocos() {
-            const comboBloco = document.getElementById("bloco");
-
-            while (comboBloco.options.length > 1) {
-              comboBloco.remove(1);
-            }
+            const comboBlocoId = "bloco";
+            clearComboBox(comboBlocoId);
 
             Object.keys(blocos).forEach((blocoKey) => {
               const option = document.createElement("option");
               option.value = blocoKey;
               option.textContent = "Bloco " + blocoKey;
-              comboBloco.appendChild(option);
+
+              document.getElementById(comboBlocoId).appendChild(option);
             });
           }
 
           function preencherComboApartamentos() {
-            var comboAparamento = document.getElementById("apartamento");
+            const comboApartamendoId = "apartamento";
+            clearComboBox(comboApartamendoId);
+
             const blocoSelecionado = document.getElementById("bloco").value;
+            const numerosApartamentos = blocos[blocoSelecionado].map(
+              (apto) => apto.numero_apto
+            );
+            const apartamentosUnicos = [...new Set(numerosApartamentos)];
 
-            while (comboAparamento.options.length > 1) {
-              comboAparamento.remove(1);
-            }
+            apartamentosUnicos.forEach((numero_apto) => {
+              const option = document.createElement("option");
+              option.value = numero_apto;
+              option.textContent = "Apartamento " + option.value;
 
-            const vistos = new Set();
-            blocos[blocoSelecionado].forEach((apartamento) => {
-              if (!vistos.has(apartamento.numero_apto)) {
-                const option = document.createElement("option");
-                option.value = apartamento.numero_apto;
-                option.textContent = "Apartamento " + option.value;
-                comboAparamento.appendChild(option);
-                vistos.add(apartamento.numero_apto);
-              }
+              document.getElementById(comboApartamendoId).appendChild(option);
             });
           }
 
           function preencherComboVagas() {
-            var valorApartamento = document.getElementById("apartamento").value;
-            var comboVaga = document.getElementById("vaga");
-
-            while (comboVaga.options.length > 1) {
-              comboVaga.remove(1);
-            }
+            const comboVagaId = "vaga";
+            clearComboBox(comboVagaId);
 
             const blocoSelecionado = document.getElementById("bloco").value;
             const apartamentoSelecionado =
               document.getElementById("apartamento").value;
 
-            console.log("bloco selecionado: " + blocoSelecionado);
-            console.log("apartamento selecionado: " + apartamentoSelecionado);
-
-            blocos[blocoSelecionado].forEach((bloco) => {
-              if (bloco.numero_apto == apartamentoSelecionado) {
+            blocos[blocoSelecionado]
+              .filter((apto) => apto.numero_apto == apartamentoSelecionado)
+              .forEach((apto) => {
                 const option = document.createElement("option");
-                option.value = bloco.numero_vaga;
+                option.value = apto.numero_vaga;
                 option.textContent = "Vaga " + option.value;
-                comboVaga.appendChild(option);
-              }
 
-              console.log(JSON.stringify(bloco.apartamento));
-            });
+                document.getElementById(comboVagaId).appendChild(option);
+              });
+          }
+
+          function clearComboBox(idComboBox) {
+            var comboBox = document.getElementById(idComboBox);
+            while (comboBox.options.length > 1) {
+              comboBox.remove(1);
+            }
           }
 
           document.addEventListener("DOMContentLoaded", preencherComboBlocos);
