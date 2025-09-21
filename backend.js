@@ -22,7 +22,7 @@ var apartmentBlocks = {
  * Obtém os blocos do condominio
  * @returns {Array<string>} Lista de apartamentos
  */
-function getApartmentBlocks() {
+function getBlocks() {
   return Object.keys(apartmentBlocks) || [];
 }
 
@@ -33,4 +33,28 @@ function getApartmentBlocks() {
  */
 function getApartmentsByBlock(block) {
   return apartmentBlocks[block] || [];
+}
+
+/**
+ * Obtém um apartamento específico de um bloco
+ * @param {string} bloco - Letra do bloco (A, B, C...)
+ * @param {number} apartmentNumber - Número do apartamento
+ * @returns {Object|null} Apartamento encontrado ou null se não existir
+ */
+function getApartment(block, apartmentNumber) {
+  return apartmentBlocks[block].find(
+    (apto) => apto.numero_apto == apartmentNumber
+  );
+}
+
+/**
+ * Obtém uma vaga de estacionamento específica dentro de um apartamento
+ * @param {string} bloco - Letra do bloco (A, B, C...)
+ * @param {number} apartmentNumber - Número do apartamento
+ * @param {number} spotNumber - Número da vaga
+ * @returns {Object|null} Vaga encontrada ou null se não existir
+ */
+function getParkingSpot(block, apartmentNumber, spotNumber) {
+  const apartment = getApartment(block, apartmentNumber);
+  return apartment.vagas.find((vaga) => vaga.numero == spotNumber) || null;
 }
