@@ -94,7 +94,4 @@ function clearComboBox(idComboBox) {
   }
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  fillBlocksComboBox();
-  // outras inicializações...
-});
+document.addEventListener("DOMContentLoaded", fillBlocksComboBox);
