@@ -54,6 +54,35 @@
       </label>
 
       <script>
+        const blocosComVagas = {
+          A: [
+            { numero: 1, apartamento: 101, ocupada: true },
+            { numero: 2, apartamento: 101, ocupada: false },
+            { numero: 3, apartamento: 102, ocupada: false },
+            { numero: 4, apartamento: 103, ocupada: false },
+          ],
+          B: [
+            { numero: 4, apartamento: 404, ocupada: false },
+            { numero: 2, apartamento: 422, ocupada: false },
+            { numero: 9, apartamento: 409, ocupada: false },
+          ],
+        };
+
+        function preencherComboBlocos() {
+            const comboBloco = document.getElementById('bloco');
+            
+            while (comboBloco.options.length > 1) {
+                comboBloco.remove(1);
+            }
+            
+            Object.keys(blocosComVagas).forEach(bloco => {
+                const option = document.createElement('option');
+                option.value = bloco;
+                option.textContent = "Bloco " + bloco;
+                comboBloco.appendChild(option);
+            })
+        }
+
         function liberarApartamento() {
           var valorBloco = document.getElementById('bloco').value;
           var comboAparamento = document.getElementById('apartamento');
@@ -83,6 +112,8 @@
             comboVaga.value = "";
           }
         }
+
+        document.addEventListener('DOMContentLoaded', preencherComboBlocos);
       </script>
     </fieldset>
 
