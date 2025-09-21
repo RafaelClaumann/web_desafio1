@@ -34,7 +34,7 @@
             id="bloco"
             name="bloco_apartamento"
             required
-            onchange="liberarApartamento()"
+            onchange="enableApartmentComboBox()"
           >
             <option value="">Selecione...</option>
           </select>
@@ -47,7 +47,7 @@
             name="numero_apartamento"
             required
             disabled
-            onchange="liberarVaga()"
+            onchange="enableParkingSpotComboBox()"
           >
             <option value="">Selecione...</option>
           </select>
@@ -63,7 +63,7 @@
       <input type="submit" value="Enviar" />
     </form>
     <script>
-      const blocos = {
+      const apartmentBlocks = {
         A: [
           { numero_apto: 101, numero_vaga: 111, ocupada: true },
           { numero_apto: 101, numero_vaga: 222, ocupada: false },
@@ -77,79 +77,76 @@
         ],
       };
 
-      function liberarApartamento() {
-        var comboAparamento = document.getElementById("apartamento");
-        var comboVaga = document.getElementById("vaga");
+      function enableApartmentComboBox() {
+        var aprtmentComboBox = document.getElementById("apartamento");
+        var parkingSpotComboBox = document.getElementById("vaga");
 
-        comboAparamento.disabled = true;
-        comboVaga.disabled = true;
+        aprtmentComboBox.disabled = true;
+        parkingSpotComboBox.disabled = true;
 
         if (document.getElementById("bloco").value) {
-          comboAparamento.disabled = false;
-          preencherComboApartamentos();
+          aprtmentComboBox.disabled = false;
+          fillApartmentComboBox();
           return;
         }
       }
 
-      function liberarVaga() {
-        var comboVaga = document.getElementById("vaga");
-        comboVaga.disabled = true;
+      function enableParkingSpotComboBox() {
+        var parkingSpotComboBox = document.getElementById("vaga");
+        parkingSpotComboBox.disabled = true;
 
         if (document.getElementById("apartamento").value) {
-          comboVaga.disabled = false;
-          preencherComboVagas();
+          parkingSpotComboBox.disabled = false;
+          fillParkingSpotComboBox();
           return;
         }
       }
 
-      function preencherComboBlocos() {
-        const comboBlocoId = "bloco";
-        clearComboBox(comboBlocoId);
+      function fillBlocksComboBox() {
+        const comboBoxBlockId = "bloco";
+        clearComboBox(comboBoxBlockId);
 
-        Object.keys(blocos).forEach((blocoKey) => {
+        Object.keys(apartmentBlocks).forEach((blocoKey) => {
           const option = document.createElement("option");
           option.value = blocoKey;
           option.textContent = "Bloco " + blocoKey;
 
-          document.getElementById(comboBlocoId).appendChild(option);
+          document.getElementById(comboBoxBlockId).appendChild(option);
         });
       }
 
-      function preencherComboApartamentos() {
-        const comboApartamendoId = "apartamento";
-        clearComboBox(comboApartamendoId);
+      function fillApartmentComboBox() {
+        const comboBoxApartmentId = "apartamento";
+        clearComboBox(comboBoxApartmentId);
 
-        const blocoSelecionado = document.getElementById("bloco").value;
-        const numerosApartamentos = blocos[blocoSelecionado].map(
-          (apto) => apto.numero_apto
-        );
-        const apartamentosUnicos = [...new Set(numerosApartamentos)];
+        const selectedBlock = document.getElementById("bloco").value;
+        const apartmentNumbers = apartmentBlocks[selectedBlock].map(apto => apto.numero_apto);
+        const uniqueApartmentsNumbers = [...new Set(apartmentNumbers)];
 
-        apartamentosUnicos.forEach((numero_apto) => {
+        uniqueApartmentsNumbers.forEach(apt_number => {
           const option = document.createElement("option");
-          option.value = numero_apto;
+          option.value = apt_number;
           option.textContent = "Apartamento " + option.value;
 
-          document.getElementById(comboApartamendoId).appendChild(option);
+          document.getElementById(comboBoxApartmentId).appendChild(option);
         });
       }
 
-      function preencherComboVagas() {
-        const comboVagaId = "vaga";
-        clearComboBox(comboVagaId);
+      function fillParkingSpotComboBox() {
+        const comboBoxParkingSpotId = "vaga";
+        clearComboBox(comboBoxParkingSpotId);
 
-        const blocoSelecionado = document.getElementById("bloco").value;
-        const apartamentoSelecionado =
-          document.getElementById("apartamento").value;
+        const selectdBlock = document.getElementById("bloco").value;
+        const selectedApartment = document.getElementById("apartamento").value;
 
-        blocos[blocoSelecionado]
-          .filter((apto) => apto.numero_apto == apartamentoSelecionado)
-          .forEach((apto) => {
+        apartmentBlocks[selectdBlock]
+          .filter(apt => apt.numero_apto == selectedApartment)
+          .forEach(apt => {
             const option = document.createElement("option");
-            option.value = apto.numero_vaga;
+            option.value = apt.numero_vaga;
             option.textContent = "Vaga " + option.value;
 
-            document.getElementById(comboVagaId).appendChild(option);
+            document.getElementById(comboBoxParkingSpotId).appendChild(option);
           });
       }
 
@@ -160,7 +157,10 @@
         }
       }
 
-      document.addEventListener("DOMContentLoaded", preencherComboBlocos);
+      document.addEventListener("DOMContentLoaded", function () {
+        fillBlocksComboBox();
+        // outras inicializações...
+      });
     </script>
   </body>
 </html>
