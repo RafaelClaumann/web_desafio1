@@ -14,8 +14,17 @@ var apartmentBlocks = {
     { numero_apto: 404, vagas: [{ numero: 4, ocupada: false }] },
     { numero_apto: 422, vagas: [{ numero: 2, ocupada: false }] },
     { numero_apto: 409, vagas: [{ numero: 9, ocupada: false }] },
+    { numero_apto: 405, vagas: [] },
   ],
 };
+
+/**
+ * Obtém os blocos do condominio
+ * @returns {Array<string>} Lista de apartamentos
+ */
+function getApartmentBlocks() {
+  return Object.keys(apartmentBlocks) || [];
+}
 
 /**
  * Obtém apartamentos de um bloco

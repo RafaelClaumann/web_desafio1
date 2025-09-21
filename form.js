@@ -1,17 +1,3 @@
-const apartmentBlocks = {
-  A: [
-    { numero_apto: 101, numero_vaga: 111, ocupada: true },
-    { numero_apto: 101, numero_vaga: 222, ocupada: false },
-    { numero_apto: 103, numero_vaga: 333, ocupada: false },
-    { numero_apto: 104, numero_vaga: 444, ocupada: false },
-  ],
-  B: [
-    { numero_apto: 404, numero_vaga: 4, ocupada: false },
-    { numero_apto: 422, numero_vaga: 2, ocupada: false },
-    { numero_apto: 409, numero_vaga: 9, ocupada: false },
-  ],
-};
-
 function enableApartmentComboBox() {
   var aprtmentComboBox = document.getElementById("apartamento");
   var parkingSpotComboBox = document.getElementById("vaga");
@@ -41,7 +27,8 @@ function fillBlocksComboBox() {
   const comboBoxBlockId = "bloco";
   clearComboBox(comboBoxBlockId);
 
-  Object.keys(apartmentBlocks).forEach((blocoKey) => {
+  const blocks = getApartmentBlocks();
+  blocks.forEach((blocoKey) => {
     const option = document.createElement("option");
     option.value = blocoKey;
     option.textContent = "Bloco " + blocoKey;
@@ -55,14 +42,11 @@ function fillApartmentComboBox() {
   clearComboBox(comboBoxApartmentId);
 
   const selectedBlock = document.getElementById("bloco").value;
-  const apartmentNumbers = apartmentBlocks[selectedBlock].map(
-    (apto) => apto.numero_apto
-  );
-  const uniqueApartmentsNumbers = [...new Set(apartmentNumbers)];
+  const apartments = getApartmentsByBlock(selectedBlock)
 
-  uniqueApartmentsNumbers.forEach((apt_number) => {
+  apartments.forEach((apartment) => {
     const option = document.createElement("option");
-    option.value = apt_number;
+    option.value = apartment.numero_apto;
     option.textContent = "Apartamento " + option.value;
 
     document.getElementById(comboBoxApartmentId).appendChild(option);
@@ -73,17 +57,21 @@ function fillParkingSpotComboBox() {
   const comboBoxParkingSpotId = "vaga";
   clearComboBox(comboBoxParkingSpotId);
 
-  const selectdBlock = document.getElementById("bloco").value;
+  const selectedBlock = document.getElementById("bloco").value;
   const selectedApartment = document.getElementById("apartamento").value;
 
-  apartmentBlocks[selectdBlock]
+  const apartments = getApartmentsByBlock(selectedBlock)
+
+  apartments
     .filter((apt) => apt.numero_apto == selectedApartment)
     .forEach((apt) => {
-      const option = document.createElement("option");
-      option.value = apt.numero_vaga;
-      option.textContent = "Vaga " + option.value;
+      apt.vagas.forEach(vaga => {
+        const option = document.createElement("option");
+        option.value = vaga.numero;
+        option.textContent = "Vaga " + option.value;
 
-      document.getElementById(comboBoxParkingSpotId).appendChild(option);
+        document.getElementById(comboBoxParkingSpotId).appendChild(option);
+      });
     });
 }
 
