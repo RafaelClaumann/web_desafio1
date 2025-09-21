@@ -18,6 +18,12 @@ var apartmentBlocks = {
   ],
 };
 
+function _initApartmentBlocks() {
+  if (!localStorage.getItem("apartmentBlocks")) {
+    localStorage.setItem("apartmentBlocks", JSON.stringify(apartmentBlocks));
+  }
+}
+
 /**
  * Obtém os blocos do condominio
  * @returns {Array<string>} Lista de apartamentos
@@ -58,3 +64,5 @@ function getParkingSpot(block, apartmentNumber, spotNumber) {
   const apartment = getApartment(block, apartmentNumber);
   return apartment.vagas.find((vaga) => vaga.numero == spotNumber) || null;
 }
+
+document.addEventListener("DOMContentLoaded", _initApartmentBlocks);
