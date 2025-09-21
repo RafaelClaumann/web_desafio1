@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Cadastro de Veículo</title>
+</head>
+
+<body>
+  <form>
+    <fieldset>
+      <legend>Dados do Proprietário</legend>
+      <label>Nome do proprietário:</label>
+      <input type="text" name="nome_proprietario" required/>
+    </fieldset>
+
+    <fieldset>
+      <legend>Dados do Veículo</legend>
+      <label>Placa do veículo:</label>
+      <input type="text" name="placa_veiculo" required/>
+
+      <label>Modelo do veículo:</label>
+      <input type="text" name="modelo_veiculo" required/>
+
+      <label>Cor do veículo:</label>
+      <input type="text" name="cor_veiculo" required/>
+    </fieldset>
+
+    <fieldset>
+      <legend>Dados do Apartamento</legend>
+
+      <label>Bloco do apartamento:
+        <select id="bloco" name="bloco_apartamento" required onchange="liberarApartamento()">
+          <option value="">Selecione...</option>
+          <option value="A">Bloco A</option>
+          <option value="B">Bloco B</option>
+        </select>
+      </label>
+
+      <label>Número do apartamento:
+        <select id="apartamento" name="numero_apartamento" required disabled onchange="liberarVaga()">
+          <option value="">Selecione...</option>
+          <option value="101">101</option>
+          <option value="102">102</option>
+        </select>
+      </label>
+
+      <label>Número da vaga de estacionamento:
+        <select id="vaga" name="vaga_estacionamento" required disabled>
+          <option value="">Selecione...</option>
+          <option value="V01">Vaga 01</option>
+          <option value="V02">Vaga 02</option>
+        </select>
+      </label>
+
+      <script>
+        function liberarApartamento() {
+          var valorBloco = document.getElementById('bloco').value;
+          var comboAparamento = document.getElementById('apartamento');
+
+          console.log("valorBloco: " + valorBloco);
+          console.log("comboAparamento: " + comboAparamento.disabled);
+
+          if (valorBloco !== "") {
+            comboAparamento.disabled = false;
+          } else {
+            comboAparamento.disabled = true;
+            comboAparamento.value = "";
+          }
+        }
+
+        function liberarVaga() {
+          var valorApartamento = document.getElementById('apartamento').value;
+          var comboVaga = document.getElementById('vaga');
+
+          console.log("valorApartamento: " + valorApartamento);
+          console.log("comboVaga: " + comboVaga.disabled);
+
+          if (valorApartamento !== "") {
+            comboVaga.disabled = false;
+          } else {
+            comboVaga.disabled = true;
+            comboVaga.value = "";
+          }
+        }
+      </script>
+    </fieldset>
+
+    <input type="submit" value="Enviar" />
+  </form>
+</body>
+
+</html>
