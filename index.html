@@ -6,25 +6,47 @@
   </head>
 
   <body>
-    <script src="form.js"></script>
-    
-    <form>
+    <form onsubmit="enviarFormulario(event)">
       <fieldset>
         <legend>Dados do Proprietário</legend>
         <label>Nome do proprietário:</label>
-        <input type="text" name="nome_proprietario" required />
+        <input
+          id="nome_proprietario"
+          type="text"
+          name="nome_proprietario"
+          value="Rafael Claumann Bernardes"
+          required
+        />
       </fieldset>
 
       <fieldset>
         <legend>Dados do Veículo</legend>
         <label>Placa do veículo:</label>
-        <input type="text" name="placa_veiculo" required />
+        <input
+          id="placa_veiculo"
+          type="text"
+          name="placa_veiculo"
+          value="MKU4J39"
+          required
+        />
 
         <label>Modelo do veículo:</label>
-        <input type="text" name="modelo_veiculo" required />
+        <input
+          id="modelo_veiculo"
+          type="text"
+          name="modelo_veiculo"
+          value="New Fiesta"
+          required
+        />
 
         <label>Cor do veículo:</label>
-        <input type="text" name="cor_veiculo" required />
+        <input
+          id="cor_veiculo"
+          type="text"
+          name="cor_veiculo"
+          value="Branca"
+          required
+        />
       </fieldset>
 
       <fieldset>
@@ -64,5 +86,21 @@
       </fieldset>
       <input type="submit" value="Enviar" />
     </form>
+
+    <pre
+      id="output"
+      style="
+        border: 1px solid #333;
+        padding: 10px;
+        border-radius: 8px;
+        background-color: #f9f9f9;
+        max-width: 400px;
+        overflow: auto;
+        display: none;
+      "
+    ></pre>
+
+    <script src="backend.js"></script>
+    <script src="form.js"></script>
   </body>
 </html>
