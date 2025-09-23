@@ -3,15 +3,15 @@ var apartmentBlocks = {
     {
       numero_apto: 101,
       vagas: [
-        { 
-            numero: 111,
-            ocupada: true,
-            vehicle: {
-                owner: "Rafael Claumann Bernardes",
-                plate: "MKU4J39",
-                model: "New Fiesta",
-                color: "Branca"
-            }
+        {
+          numero: 111,
+          ocupada: true,
+          vehicle: {
+            owner: "Rafael Claumann Bernardes",
+            plate: "MKU4J39",
+            model: "New Fiesta",
+            color: "Branca",
+          },
         },
         { numero: 222, ocupada: false },
       ],
@@ -24,6 +24,25 @@ var apartmentBlocks = {
     { numero_apto: 422, vagas: [{ numero: 2, ocupada: false }] },
     { numero_apto: 409, vagas: [{ numero: 9, ocupada: false }] },
     { numero_apto: 405, vagas: [] },
+  ],
+  C: [
+    { numero_apto: 102, vagas: [{ numero: 2, ocupada: false }] },
+    { numero_apto: 103, vagas: [{ numero: 9, ocupada: false }] },
+    {
+      numero_apto: 101,
+      vagas: [
+        {
+          numero: 111,
+          ocupada: true,
+          vehicle: {
+            owner: "Outro Dono Qualquer",
+            plate: "MJO1086",
+            model: "CGFAN150",
+            color: "Preta",
+          },
+        },
+      ],
+    },
   ],
 };
 
@@ -98,61 +117,37 @@ function getParkingSpot(block, apartmentNumber, spotNumber) {
   return apartment.vagas.find((vaga) => vaga.numero == spotNumber) || null;
 }
 
-function test() {
+/**
+ * Obtém todas as vagas do condomínio, incluindo o bloco e o número do apartamento.
+ *
+ * Cada item da lista terá a seguinte estrutura:
+ * {
+ *   bloco: string,           // letra do bloco (A, B, C...)
+ *   apartamento: number,     // número do apartamento
+ *   numero: number,          // número da vaga
+ *   ocupada: boolean,        // true se a vaga estiver ocupada
+ *   vehicle?: {              // objeto opcional com informações do veículo, se existir
+ *     owner: string,
+ *     plate: string,
+ *     model: string,
+ *     color: string
+ *   }
+ * }
+ *
+ * @returns {Array<Object>} Lista de vagas com informações de bloco e apartamento
+ */
+function getParkingSpotsWithBlockAndApartment() {
   const _apartmentBlocks = _getApartmentBlocks();
 
-  const block = Object.keys(apartmentBlocks).find(key => apartmentBlocks[key].includes(apartment));
-
-
-  Object.values(allParkingSpots).flatMap(spot => spot.vehicle)
-
-  allParkingSpot.flatMap(spot => spot.vehicle).filter(spot => spot != null)
-
-
-// todos os apartamentos em lista
-let allApartments = Object.values(apartmentBlocks).flatMap(apartments => apartments);
-let allParkingSpots = allApartments.flatMap(apartment => apartment.vagas);
-let allSpotsNumbers = allParkingSpots.flatMap(spot => spot.numero)
-let allSpotsVehicles = allParkingSpots.flatMap(spot => spot.vehicle).filter(vehicle => vehicle != null)
-
-Object.entries(apartmentBlocks).flatMap(([block, apartments]) => (
-    {
-        block: block,
-        apartment: apartments.flatMap(apto => {{
-            
-        }})
-    }
-))
-
-allApartments
-    .flatMap(apartment => apartment)
-
-allApartments.flatMap(apartment => apartment.vagas.flatMap(spots => ({
-    apartment: apartment.numero_apto,
-    spot_numero: spots.numero,
-    spot_plate: spots.vehicle
-})));
-
-Object.values(apartmentBlocks)
-    .flatMap(apartments => apartments)
-    .flatMap(apartment => ({
-        bloco: Object.keys(apartmentBlocks).find(key => apartmentBlocks[key].includes)
-    }))
-
-const allParkingSpotss = Object.values(apartmentBlocks)
-  .flatMap(apartments => 
-    apartments.flatMap(apartment => 
-      apartment.vagas.map(vaga => ({
-        ...vaga,
+  return Object.entries(_apartmentBlocks).flatMap(([block, apartments]) =>
+    apartments.flatMap((apartment) =>
+      apartment.vagas.map((vaga) => ({
+        bloco: block,
         apartamento: apartment.numero_apto,
-        bloco: Object.keys(apartmentBlocks).find(key => apartmentBlocks[key].includes(apartment))
+        ...vaga,
       }))
     )
   );
-
-console.log(allParkingSpots);
-
-
-
 }
+
 document.addEventListener("DOMContentLoaded", _initApartmentBlocks);
