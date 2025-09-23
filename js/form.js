@@ -8,6 +8,7 @@ function enableApartmentComboBox() {
   if (document.getElementById("bloco").value) {
     aprtmentComboBox.disabled = false;
     fillApartmentComboBox();
+    parkingSpotComboBox.innerHTML = `<option value="">Selecione...</option>`;
     return;
   }
 }
@@ -68,7 +69,9 @@ function fillParkingSpotComboBox() {
       apt.vagas.forEach((vaga) => {
         const option = document.createElement("option");
         option.value = vaga.numero;
-        option.textContent = "Vaga " + option.value;
+
+        const spotStyle = vaga.vehicle == null ? "🟢" : "🔴";
+        option.textContent = `${spotStyle} Vaga ${option.value}`;
 
         document.getElementById(comboBoxParkingSpotId).appendChild(option);
       });
@@ -85,6 +88,8 @@ function clearComboBox(idComboBox) {
 function enviarFormulario(event) {
   event.preventDefault();
 
+  const parkingSpotComboBox = document.getElementById("vaga");
+
   const vehicleData = {
     owner: document.getElementById("nome_proprietario").value,
     plate: document.getElementById("placa_veiculo").value,
@@ -95,21 +100,40 @@ function enviarFormulario(event) {
   const apartmentData = {
     block: document.getElementById("bloco").value,
     number: parseInt(document.getElementById("apartamento").value),
-    parkingSpot: parseInt(document.getElementById("vaga").value),
+    parkingSpot: parseInt(parkingSpotComboBox.value),
   };
 
   var foundApartment = getApartment(apartmentData.block, apartmentData.number);
-  var foundParkingSpot = getParkingSpot(apartmentData.block, apartmentData.number, apartmentData.parkingSpot);
+  var foundParkingSpot = getParkingSpot(
+    apartmentData.block,
+    apartmentData.number,
+    apartmentData.parkingSpot
+  );
 
   foundParkingSpot.vehicle = vehicleData;
   foundParkingSpot.ocupada = true;
 
+  updateParkingSpotOptionToOccupied(apartmentData.parkingSpot)
+
   saveApartmentBlocks();
-  console.log("parkingSpot: " + JSON.stringify(foundParkingSpot))
+  console.log("parkingSpot: " + JSON.stringify(foundParkingSpot));
 
   const output = document.getElementById("output");
   output.style.display = "block";
   output.textContent = JSON.stringify(foundApartment, null, 2);
+}
+
+function updateParkingSpotOptionToOccupied(parkingSpot) {
+  const parkingSpotComboBox = document.getElementById("vaga");
+  const parkingSpotComboBoxOptions = Array.from(parkingSpotComboBox.options);
+  
+  const selectedOption = parkingSpotComboBoxOptions.find((opt) =>
+    opt.text.includes(`Vaga ${parkingSpot}`)
+  );
+
+  if (selectedOption) {
+    selectedOption.text = `🔴 Vaga ${parkingSpot}`;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", fillBlocksComboBox);
