@@ -139,6 +139,48 @@ function getParkingSpot(block, apartmentNumber, spotNumber) {
 function getParkingSpotsWithBlockAndApartment() {
   const _apartmentBlocks = _getApartmentBlocks();
 
+  // permitir que o cliente cadastre a mesma placa nas vagas que lhe pertence
+  // nao permitir que cadastre o mesmo carro em mais de uma vaga
+
+  // BLOCO
+  // APARTAMENTO
+  // VAGA
+  // PLACA
+
+  let parkingSpots = Object.entries(_apartmentBlocks).flatMap(
+    ([block, apartments]) =>
+      apartments.flatMap((apartment) =>
+        apartment.vagas.map((vaga) => ({
+          bloco: block,
+          apartamento: apartment.numero_apto,
+          ...vaga,
+        }))
+      )
+  );
+
+  let block = "A";
+  let apartamento = 101;
+  let vaga = 222;
+  let placa = "MKU4J39";
+  parkingSpots.filter((spot) => {
+    // Encontramos uma vaga associada a placa
+
+    if (isPlateAlreadyPresent(placa)) {
+    }
+
+    if (placa == spot.vehicle?.plate) {
+      // O veiculo já está associado a outra vaga do mesmo apartamento
+      if (
+        vaga != spot.numero &&
+        apartamento == spot.apartamento &&
+        block == spot.bloco
+      ) {
+        return true;
+      }
+    }
+    return false;
+  });
+
   return Object.entries(_apartmentBlocks).flatMap(([block, apartments]) =>
     apartments.flatMap((apartment) =>
       apartment.vagas.map((vaga) => ({
@@ -147,6 +189,21 @@ function getParkingSpotsWithBlockAndApartment() {
         ...vaga,
       }))
     )
+  );
+}
+
+function isPlateAlreadyPresent(plate) {
+  const spots = getParkingSpotsWithBlockAndApartment();
+  return spots.find((spot) => spot.vehicle?.plate === plate);
+}
+
+function isDifferentSpotFromSameApartment(vaga, apartamento, bloco) {
+  const spots = getParkingSpotsWithBlockAndApartment();
+  return spots.find(
+    (spot) =>
+      spot.numero !== vaga &&
+      spot.apartamento === apartamento &&
+      spot.bloco === bloco
   );
 }
 
