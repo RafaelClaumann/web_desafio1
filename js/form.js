@@ -88,45 +88,52 @@ function clearComboBox(idComboBox) {
 function enviarFormulario(event) {
   event.preventDefault();
 
-  const parkingSpotComboBox = document.getElementById("vaga");
+  const apartmentFormValuesObject = getFormFieldsValues().apartment_values;
+  const vehicleFormValuesObject = getFormFieldsValues().vehicle_values;
 
-  const vehicleData = {
-    owner: document.getElementById("nome_proprietario").value,
-    plate: document.getElementById("placa_veiculo").value,
-    model: document.getElementById("modelo_veiculo").value,
-    color: document.getElementById("cor_veiculo").value,
-  };
-
-  const apartmentData = {
-    block: document.getElementById("bloco").value,
-    number: parseInt(document.getElementById("apartamento").value),
-    parkingSpot: parseInt(parkingSpotComboBox.value),
-  };
-
-  var foundApartment = getApartment(apartmentData.block, apartmentData.number);
-  var foundParkingSpot = getParkingSpot(
-    apartmentData.block,
-    apartmentData.number,
-    apartmentData.parkingSpot
+  var foundApartment = getApartment(
+    apartmentFormValuesObject.block,
+    apartmentFormValuesObject.number
   );
 
-  foundParkingSpot.vehicle = vehicleData;
+  var foundParkingSpot = getParkingSpot(
+    apartmentFormValuesObject.block,
+    apartmentFormValuesObject.number,
+    apartmentFormValuesObject.parkingSpot
+  );
+
+  foundParkingSpot.vehicle = vehicleFormValuesObject;
   foundParkingSpot.ocupada = true;
 
-  updateParkingSpotOptionToOccupied(apartmentData.parkingSpot)
+  updateParkingSpotComboBoxOptionToOccupied(apartmentFormValuesObject.parkingSpot);
 
   saveApartmentBlocks();
-  console.log("parkingSpot: " + JSON.stringify(foundParkingSpot));
 
   const output = document.getElementById("output");
   output.style.display = "block";
   output.textContent = JSON.stringify(foundApartment, null, 2);
 }
 
-function updateParkingSpotOptionToOccupied(parkingSpot) {
+function getFormFieldsValues() {
+  return {
+    apartment_values: {
+      block: document.getElementById("bloco").value,
+      number: parseInt(document.getElementById("apartamento").value),
+      parkingSpot: parseInt(document.getElementById("vaga").value),
+    },
+    vehicle_values: {
+      owner: document.getElementById("nome_proprietario").value,
+      plate: document.getElementById("placa_veiculo").value,
+      model: document.getElementById("modelo_veiculo").value,
+      color: document.getElementById("cor_veiculo").value,
+    },
+  };
+}
+
+function updateParkingSpotComboBoxOptionToOccupied(parkingSpot) {
   const parkingSpotComboBox = document.getElementById("vaga");
   const parkingSpotComboBoxOptions = Array.from(parkingSpotComboBox.options);
-  
+
   const selectedOption = parkingSpotComboBoxOptions.find((opt) =>
     opt.text.includes(`Vaga ${parkingSpot}`)
   );
