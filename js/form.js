@@ -1,12 +1,12 @@
 function enableApartmentComboBox() {
-  var aprtmentComboBox = document.getElementById("apartamento");
+  var apartmentComboBox = document.getElementById("apartamento");
   var parkingSpotComboBox = document.getElementById("vaga");
 
-  aprtmentComboBox.disabled = true;
+  apartmentComboBox.disabled = true;
   parkingSpotComboBox.disabled = true;
 
   if (document.getElementById("bloco").value) {
-    aprtmentComboBox.disabled = false;
+    apartmentComboBox.disabled = false;
     fillApartmentComboBox();
     parkingSpotComboBox.innerHTML = `<option value="">Selecione...</option>`;
     return;
