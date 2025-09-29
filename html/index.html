@@ -48,7 +48,7 @@
       <li><a href="./listagem.html">Listagem</a></li>
     </ul>
 
-    <form onsubmit="enviarFormulario(event)" method="POST">
+    <form id="form_veiculo" onsubmit="enviarFormulario(event)" method="POST">
       <fieldset>
         <legend>Dados do Proprietário</legend>
         <label>Nome do proprietário:</label>
@@ -56,6 +56,7 @@
           id="nome_proprietario"
           type="text"
           name="nome_proprietario"
+          pattern="[A-Za-z ]+"
           value="Rafael Claumann Bernardes"
           required
         />
@@ -68,6 +69,7 @@
           id="placa_veiculo"
           type="text"
           name="placa_veiculo"
+          pattern="^[A-Z]{3}-\d{4}$|^[A-Z]{3}\d[A-Z]\d{2}$"
           value="MKU4J39"
           required
         />
@@ -86,6 +88,7 @@
           id="cor_veiculo"
           type="text"
           name="cor_veiculo"
+          pattern="[A-Za-z ]+"
           value="Branca"
           required
         />
@@ -144,5 +147,6 @@
 
     <script src="../js/backend.js"></script>
     <script src="../js/form.js"></script>
+    <script src="../js/form_validation.js"></script>
   </body>
 </html>
