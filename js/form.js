@@ -91,16 +91,13 @@ function enviarFormulario(event) {
   const apartmentFormValuesObject = getFormFieldsValues().apartment_values;
   const vehicleFormValuesObject = getFormFieldsValues().vehicle_values;
 
-  var foundApartment = getApartment(
-    apartmentFormValuesObject.block,
-    apartmentFormValuesObject.number
-  );
+  if (isPlateAlreadyPresent(vehicleFormValuesObject.plate)) {
+    showErrorModal(`A placa ${vehicleFormValuesObject.plate} já está cadastrada.`);
+    return false;
+  }
 
-  var foundParkingSpot = getParkingSpot(
-    apartmentFormValuesObject.block,
-    apartmentFormValuesObject.number,
-    apartmentFormValuesObject.parkingSpot
-  );
+  var foundApartment = getApartment(apartmentFormValuesObject.block, apartmentFormValuesObject.number);
+  var foundParkingSpot = getParkingSpot(apartmentFormValuesObject.block, apartmentFormValuesObject.number, apartmentFormValuesObject.parkingSpot);
 
   foundParkingSpot.vehicle = vehicleFormValuesObject;
   foundParkingSpot.ocupada = true;
@@ -141,6 +138,19 @@ function updateParkingSpotComboBoxOptionToOccupied(parkingSpot) {
   if (selectedOption) {
     selectedOption.text = `🔴 Vaga ${parkingSpot}`;
   }
+}
+
+function showErrorModal(msg) {
+  const mensagem = document.getElementById("error_message");
+  mensagem.textContent = msg;
+
+  const modal = document.getElementById("form_error_modal");
+  modal.style.display = "flex";
+}
+
+function closeModal() {
+  const modal = document.getElementById("form_error_modal");
+  modal.style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", fillBlocksComboBox);
