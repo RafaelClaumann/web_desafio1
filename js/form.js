@@ -117,15 +117,15 @@ function enviarFormulario(event) {
 function getFormFieldsValues() {
   return {
     apartment_values: {
-      block: document.getElementById("bloco").value,
+      block: document.getElementById("bloco").value.trim(),
       number: parseInt(document.getElementById("apartamento").value),
       parkingSpot: parseInt(document.getElementById("vaga").value),
     },
     vehicle_values: {
-      owner: document.getElementById("nome_proprietario").value,
-      plate: document.getElementById("placa_veiculo").value,
-      model: document.getElementById("modelo_veiculo").value,
-      color: document.getElementById("cor_veiculo").value,
+      owner: document.getElementById("nome_proprietario").value.trim(),
+      plate: document.getElementById("placa_veiculo").value.trim(),
+      model: document.getElementById("modelo_veiculo").value.trim(),
+      color: document.getElementById("cor_veiculo").value.trim(),
     },
   };
 }
