@@ -18,13 +18,28 @@ function fillParkingTableOnLoad() {
     const tdPlaca = document.createElement("td");
     tdPlaca.textContent = parkingSpot.vehicle?.plate || "vazia";
 
+    const tdTeste = document.createElement("td")
+    tdTeste.textContent = "teste";
+
+    console.log("table_row_source: " + tableRow)
+    const img =`<img src= "../assets/delete_trash_can.png" width="20" height="20" onclick="myFunction(this)" alt="">`
+    tdTeste.innerHTML = img
+
     tableRow.appendChild(thBloco);
     tableRow.appendChild(tdApartamento);
     tableRow.appendChild(tdVaga);
     tableRow.appendChild(tdPlaca);
+    tableRow.appendChild(tdTeste);
 
     tbody.appendChild(tableRow);
   });
+}
+
+let test = null;
+function myFunction(tableRow) {
+  test = tableRow.parentNode
+  console.log("table_row_result: " + tableRow.parentNode)
+  alert("Hello! I am an alert box!!");
 }
 
 function highlightOccupiedParkingSpots() {
